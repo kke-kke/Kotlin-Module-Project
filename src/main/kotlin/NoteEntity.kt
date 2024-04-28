@@ -68,6 +68,8 @@ open class NoteEntity {
         val archiveName = scanner.nextLine()
         if (archives.any { it.name == archiveName }) {
             println("Архив с таким названием уже существует, введите другое название")
+        } else if (archiveName.isBlank()) {
+            println("Название архива не может быть пустым")
         } else {
             archives.add(Archive(archiveName))
             println("Создан архив с названием \"$archiveName\"")
@@ -116,11 +118,20 @@ open class NoteEntity {
         val notes = archives.first { it.name == archiveName }.notesInArchive
         if (notes.any { it.noteName == noteName}) {
             println("Заметка с таким названием уже существует, введите другое название")
+        } else if (noteName.isBlank()) {
+            println("Название заметки не может быть пустым")
         } else {
-            println("Введите содержимое заметки")
-            val noteBody = scanner.nextLine()
-            notes.add(Note(noteName, noteBody))
-            println("Создана заметка с названием \"$noteName\"")
+            while(true) {
+                println("Введите содержимое заметки")
+                val noteBody = scanner.nextLine()
+                if (noteBody.isBlank()) {
+                    println("Содержимое заметки не может быть пустым")
+                } else {
+                    notes.add(Note(noteName, noteBody))
+                    println("Создана заметка с названием \"$noteName\"")
+                    return
+                }
+            }
         }
     }
 
